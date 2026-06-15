@@ -1,0 +1,4 @@
+package com.JoaoLucas.Sistema.Barbearia.repository;
+
+// Repositórios — conexão com o banco virá aqui
+

@@ -1,0 +1,4 @@
+package com.JoaoLucas.Sistema.Barbearia.service;
+
+// Services — lógica de negócio virá aqui
+
