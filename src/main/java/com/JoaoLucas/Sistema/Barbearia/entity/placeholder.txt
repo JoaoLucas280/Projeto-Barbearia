@@ -1,4 +1,0 @@
-package com.JoaoLucas.Sistema.Barbearia.entity;
-
-// Entidades do banco — as "tabelas" virão aqui
-
