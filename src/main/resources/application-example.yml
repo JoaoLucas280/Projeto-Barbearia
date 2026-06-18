@@ -12,6 +12,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        type:
+          preferred_insant_jdbc_type: VARCHAR
   flyway:
     enabled: true
 
