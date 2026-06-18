@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class ClienteService {
 
-    private static  Logger log = LoggerFactory.getLogger(ClienteService.class);
+    private static final Logger log = LoggerFactory.getLogger(ClienteService.class);
 
     @Autowired
     private ClienteRepository clienteRepository;
