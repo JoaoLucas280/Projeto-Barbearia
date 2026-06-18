@@ -3,6 +3,7 @@ package com.JoaoLucas.Sistema.Barbearia.controller;
 import com.JoaoLucas.Sistema.Barbearia.dto.ClienteDTO;
 import com.JoaoLucas.Sistema.Barbearia.service.ClienteService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/clientes/v1")
+@RequiredArgsConstructor
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
 
     @GetMapping("/email/{email}")
     public ClienteDTO buscaClientePorEmail(@PathVariable String email) {

@@ -4,21 +4,21 @@ import com.JoaoLucas.Sistema.Barbearia.dto.ClienteDTO;
 import com.JoaoLucas.Sistema.Barbearia.entity.Cliente;
 import com.JoaoLucas.Sistema.Barbearia.mapper.ObjectMapper;
 import com.JoaoLucas.Sistema.Barbearia.repository.ClienteRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
 
     private static final Logger log = LoggerFactory.getLogger(ClienteService.class);
 
-    @Autowired
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
 
     public ClienteDTO getClienteById(Long id) {
         log.info("Procurando cliente pelo id");
