@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "barbeiros")
@@ -25,19 +28,15 @@ public class Barbeiro {
     @Column
     private String descricao;
     @Column
-    private LocalTime horario_inicio;
+    private LocalTime horarioInicio;
     @Column
-    private LocalTime horario_fim;
+    private LocalTime horarioFim;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Barbeiro barbeiro = (Barbeiro) o;
-        return Objects.equals(getId(), barbeiro.getId()) && Objects.equals(getNome(), barbeiro.getNome()) && Objects.equals(getEspecialidade(), barbeiro.getEspecialidade()) && Objects.equals(getDescricao(), barbeiro.getDescricao()) && Objects.equals(getHorario_inicio(), barbeiro.getHorario_inicio()) && Objects.equals(getHorario_fim(), barbeiro.getHorario_fim());
-    }
+    @Column(name = "dia")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "barbeiro_dias_disponiveis", joinColumns = @JoinColumn(name = "barbeiro_id"))
+    private Set<DayOfWeek> diasTrabalho = new HashSet<>();
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getNome(), getEspecialidade(), getDescricao(), getHorario_inicio(), getHorario_fim());
-    }
+
 }
