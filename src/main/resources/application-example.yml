@@ -16,6 +16,15 @@ spring:
       hibernate:
         type:
           preferred_insant_jdbc_type: VARCHAR
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
   flyway:
     enabled: true
 
