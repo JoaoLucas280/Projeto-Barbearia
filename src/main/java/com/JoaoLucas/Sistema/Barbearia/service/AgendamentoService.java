@@ -31,6 +31,7 @@ public class AgendamentoService {
     private final EmailService emailService;
 
     public Cliente buscarPorEmail(AgendamentoDTO dto) {
+        log.info("Buscando Cliente por email");
         var entity =  clienteRepository.findByEmail(dto.getClienteEmail());
 
         if (entity.isEmpty()){
@@ -45,22 +46,26 @@ public class AgendamentoService {
     }
 
     public Barbeiro buscarBarbeiro (){
+        log.info("Buscando Barbeiro");
         var entity = barbeiroRepository.findFirstByOrderByIdAsc().orElseThrow
                 (() -> new IllegalStateException("Barbeiro não encontrado"));
         return entity;
     }
 
     public Servico buscarServico (Long id){
+        log.info("Buscando Serviço");
         var entity = servicoRepository.findById(id).orElseThrow
                 (() -> new IllegalArgumentException("Serviço não encontrado"));
         return entity;
     }
 
     public LocalTime horarioFim (Servico servico, AgendamentoDTO dto) {
+        log.info("Calculando horário de término do serviço");
         return dto.getHorarioInicio().plusMinutes(servico.getDuracao());
     }
 
     private void validarDiaAtendimento(Barbeiro barbeiro, LocalDate data, AgendamentoDTO dto) {
+        log.info("validando dia atendimento");
         var entity = barbeiro.getDiasTrabalho().contains(dto.getData().getDayOfWeek());
         if (!entity){
             throw new IllegalArgumentException("Barbeiro não atende neste dia");
@@ -68,12 +73,14 @@ public class AgendamentoService {
     }
 
     private void validarDentroExpediente(Barbeiro barbeiro, LocalTime inicio, LocalTime fim) {
+        log.info("Validando horário de expediente");
         if (barbeiro.getHorarioInicio().isAfter(inicio) || barbeiro.getHorarioFim().isBefore(fim)){
             throw new IllegalArgumentException("Agendamento fora do horário de expediente do barbeiro");
         }
     }
 
     private void validarConflito(Long barbeiroId, LocalDate data, LocalTime inicio, LocalTime fim) {
+        log.info("Validando conflito");
         List<Agendamento> entity =
                 agendamentoRepository.findByBarbeiroIdAndDataAndStatusNot(barbeiroId, data, Status.CANCELADO);
 
@@ -88,6 +95,7 @@ public class AgendamentoService {
     @Transactional
     public AgendamentoDTO saveAgendamento(AgendamentoDTO dto) {
 
+        log.info("Salvando agendamento");
         var cliente = buscarPorEmail(dto);
         var barbeiro = buscarBarbeiro();
         var servico = buscarServico(dto.getServicoId());
@@ -109,15 +117,17 @@ public class AgendamentoService {
 
         emailService.enviarEmail(cliente.getEmail(), "Agendamento confirmado", "Seu agendamento para o serviço " + servico.getNome() + " no dia " + dto.getData() + " às " + dto.getHorarioInicio() + " foi confirmado.");
 
-        return ObjectMapper.map(saved, AgendamentoDTO.class);
+        return convertToDTO(saved);
 
     }
 
     private boolean haConflito(LocalTime inicio, LocalTime fim, Agendamento existente) {
+        log.info("Verificando se há conflito");
         return inicio.isBefore(existente.getHorarioFim()) && fim.isAfter(existente.getHorarioInicio());
     }
 
     public List<LocalTime> listarHorariosDisponiveis(LocalDate data, Long servicoId){
+        log.info("Listando horários disponíveis para o dia " + data + " e serviço id " + servicoId);
         Barbeiro barbeiro = buscarBarbeiro();
         Servico servico = buscarServico(servicoId);
         List<LocalTime> horariosDisponiveis = new ArrayList<>();
@@ -144,7 +154,7 @@ public class AgendamentoService {
     public List<AgendamentoDTO> buscarPorEmailCliente(String email) {
         log.info("Buscando agendamentos pelo email do cliente");
         var agendamentos = agendamentoRepository.findByClienteEmail(email);
-        return ObjectMapper.mapListObjects(agendamentos, AgendamentoDTO.class);
+        return convertListToDTO(agendamentos);
     }
 
      public void cancelarAgendamento(Long id, String email) {
@@ -158,6 +168,23 @@ public class AgendamentoService {
         agendamentoRepository.save(entity);
 
         emailService.enviarEmail(entity.getCliente().getEmail(), "Agendamento cancelado", "Seu agendamento para o serviço " + entity.getServico().getNome() + " no dia " + entity.getData() + " às " + entity.getHorarioInicio() + " foi cancelado.");
+    }
+
+    private AgendamentoDTO convertToDTO(Agendamento agendamento) {
+        var certos = ObjectMapper.map(agendamento, AgendamentoDTO.class);
+        certos.setServicoId(agendamento.getServico().getId());
+        certos.setClienteEmail(agendamento.getCliente().getEmail());
+        certos.setClienteNome(agendamento.getCliente().getNome());
+        certos.setClienteTelefone(agendamento.getCliente().getTelefone());
+        return certos;
+    }
+
+    private List<AgendamentoDTO> convertListToDTO(List<Agendamento> agendamentos) {
+        List<AgendamentoDTO> dtos = new ArrayList<>();
+        for (Agendamento agendamento : agendamentos) {
+            dtos.add(convertToDTO(agendamento));
+        }
+        return dtos;
     }
 
 }
