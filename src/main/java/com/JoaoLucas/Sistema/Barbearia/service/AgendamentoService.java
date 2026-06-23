@@ -2,6 +2,7 @@ package com.JoaoLucas.Sistema.Barbearia.service;
 
 import com.JoaoLucas.Sistema.Barbearia.dto.AgendamentoDTO;
 import com.JoaoLucas.Sistema.Barbearia.entity.*;
+import com.JoaoLucas.Sistema.Barbearia.entity.enums.Status;
 import com.JoaoLucas.Sistema.Barbearia.mapper.ObjectMapper;
 import com.JoaoLucas.Sistema.Barbearia.repository.AgendamentoRepository;
 import com.JoaoLucas.Sistema.Barbearia.repository.BarbeiroRepository;
@@ -10,7 +11,6 @@ import com.JoaoLucas.Sistema.Barbearia.repository.ServicoRepository;
 import com.JoaoLucas.Sistema.Barbearia.service.email_service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

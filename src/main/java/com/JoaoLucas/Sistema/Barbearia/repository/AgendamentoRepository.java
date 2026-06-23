@@ -1,7 +1,7 @@
 package com.JoaoLucas.Sistema.Barbearia.repository;
 
 import com.JoaoLucas.Sistema.Barbearia.entity.Agendamento;
-import com.JoaoLucas.Sistema.Barbearia.entity.Status;
+import com.JoaoLucas.Sistema.Barbearia.entity.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

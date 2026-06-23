@@ -1,11 +1,7 @@
 package com.JoaoLucas.Sistema.Barbearia.dto;
 
 
-import com.JoaoLucas.Sistema.Barbearia.entity.Barbeiro;
-import com.JoaoLucas.Sistema.Barbearia.entity.Cliente;
-import com.JoaoLucas.Sistema.Barbearia.entity.Servico;
-import com.JoaoLucas.Sistema.Barbearia.entity.Status;
-import jakarta.persistence.*;
+import com.JoaoLucas.Sistema.Barbearia.entity.enums.Status;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
