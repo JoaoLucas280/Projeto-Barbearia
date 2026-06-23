@@ -170,6 +170,12 @@ public class AgendamentoService {
         emailService.enviarEmail(entity.getCliente().getEmail(), "Agendamento cancelado", "Seu agendamento para o serviço " + entity.getServico().getNome() + " no dia " + entity.getData() + " às " + entity.getHorarioInicio() + " foi cancelado.");
     }
 
+    public List<AgendamentoDTO> buscarTodosAgendamentos() {
+        log.info("Buscando todos agendamentos");
+        var agendamentos = agendamentoRepository.findAll();
+        return convertListToDTO(agendamentos);
+    }
+
     private AgendamentoDTO convertToDTO(Agendamento agendamento) {
         var certos = ObjectMapper.map(agendamento, AgendamentoDTO.class);
         certos.setServicoId(agendamento.getServico().getId());

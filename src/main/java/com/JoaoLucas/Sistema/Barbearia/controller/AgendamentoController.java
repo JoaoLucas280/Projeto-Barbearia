@@ -40,6 +40,13 @@ public class AgendamentoController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/todos")
+    public ResponseEntity<List<AgendamentoDTO>> listarTodos(){
+        var buscados = service.buscarTodosAgendamentos();
+        return ResponseEntity.ok(buscados);
+    }
+
+
     @PatchMapping("/{id}/cancelar")
     public ResponseEntity<Void> cancelarAgendamento(@PathVariable Long id, @RequestParam String email) {
         service.cancelarAgendamento(id, email);
