@@ -1,5 +1,6 @@
 package com.JoaoLucas.Sistema.Barbearia.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,10 +10,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -22,6 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filtro(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/usuarios/v1").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/agendamentos/v1").permitAll()
@@ -38,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/clientes/v1/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/clientes/v1/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/clientes/v1/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/v1/login").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated());
 
