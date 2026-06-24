@@ -2,6 +2,7 @@ package com.JoaoLucas.Sistema.Barbearia.service;
 
 import com.JoaoLucas.Sistema.Barbearia.dto.AgendamentoDTO;
 import com.JoaoLucas.Sistema.Barbearia.entity.*;
+import com.JoaoLucas.Sistema.Barbearia.entity.enums.Status;
 import com.JoaoLucas.Sistema.Barbearia.mapper.ObjectMapper;
 import com.JoaoLucas.Sistema.Barbearia.repository.AgendamentoRepository;
 import com.JoaoLucas.Sistema.Barbearia.repository.BarbeiroRepository;
@@ -10,7 +11,6 @@ import com.JoaoLucas.Sistema.Barbearia.repository.ServicoRepository;
 import com.JoaoLucas.Sistema.Barbearia.service.email_service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -168,6 +168,12 @@ public class AgendamentoService {
         agendamentoRepository.save(entity);
 
         emailService.enviarEmail(entity.getCliente().getEmail(), "Agendamento cancelado", "Seu agendamento para o serviço " + entity.getServico().getNome() + " no dia " + entity.getData() + " às " + entity.getHorarioInicio() + " foi cancelado.");
+    }
+
+    public List<AgendamentoDTO> buscarTodosAgendamentos() {
+        log.info("Buscando todos agendamentos");
+        var agendamentos = agendamentoRepository.findAll();
+        return convertListToDTO(agendamentos);
     }
 
     private AgendamentoDTO convertToDTO(Agendamento agendamento) {

@@ -1,6 +1,7 @@
 package com.JoaoLucas.Sistema.Barbearia.entity;
 
 
+import com.JoaoLucas.Sistema.Barbearia.entity.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
