@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +24,15 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Usuario usuario)) return false;
+        return Objects.equals(getId(), usuario.getId()) && Objects.equals(getUsername(), usuario.getUsername()) && Objects.equals(getSenha(), usuario.getSenha()) && getRole() == usuario.getRole();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUsername(), getSenha(), getRole());
+    }
 }

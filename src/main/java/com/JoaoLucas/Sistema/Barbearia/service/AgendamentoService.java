@@ -3,7 +3,9 @@ package com.JoaoLucas.Sistema.Barbearia.service;
 import com.JoaoLucas.Sistema.Barbearia.dto.AgendamentoDTO;
 import com.JoaoLucas.Sistema.Barbearia.entity.*;
 import com.JoaoLucas.Sistema.Barbearia.entity.enums.Status;
-import com.JoaoLucas.Sistema.Barbearia.mapper.ObjectMapper;
+import com.JoaoLucas.Sistema.Barbearia.exception.ConflitoException;
+import com.JoaoLucas.Sistema.Barbearia.exception.RecursoNaoEncontradoException;
+import com.JoaoLucas.Sistema.Barbearia.mapper.Mapper;
 import com.JoaoLucas.Sistema.Barbearia.repository.AgendamentoRepository;
 import com.JoaoLucas.Sistema.Barbearia.repository.BarbeiroRepository;
 import com.JoaoLucas.Sistema.Barbearia.repository.ClienteRepository;
@@ -42,20 +44,20 @@ public class AgendamentoService {
             clienteRepository.save(cliente);
             return cliente;
         }
-        return entity.orElseThrow(() -> new IllegalStateException("Cliente não encontrado com este email"));
+        return entity.orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado com este email"));
     }
 
     public Barbeiro buscarBarbeiro (){
         log.info("Buscando Barbeiro");
         var entity = barbeiroRepository.findFirstByOrderByIdAsc().orElseThrow
-                (() -> new IllegalStateException("Barbeiro não encontrado"));
+                (() -> new RecursoNaoEncontradoException("Barbeiro não encontrado"));
         return entity;
     }
 
     public Servico buscarServico (Long id){
         log.info("Buscando Serviço");
         var entity = servicoRepository.findById(id).orElseThrow
-                (() -> new IllegalArgumentException("Serviço não encontrado"));
+                (() -> new RecursoNaoEncontradoException("Serviço não encontrado"));
         return entity;
     }
 
@@ -64,7 +66,7 @@ public class AgendamentoService {
         return dto.getHorarioInicio().plusMinutes(servico.getDuracao());
     }
 
-    private void validarDiaAtendimento(Barbeiro barbeiro, LocalDate data, AgendamentoDTO dto) {
+    private void validarDiaAtendimento(Barbeiro barbeiro, AgendamentoDTO dto) {
         log.info("validando dia atendimento");
         var entity = barbeiro.getDiasTrabalho().contains(dto.getData().getDayOfWeek());
         if (!entity){
@@ -87,7 +89,7 @@ public class AgendamentoService {
         for (int i = 0 ;  i < entity.size() ; i++){
             var agendamento = entity.get(i);
             if (haConflito(inicio, fim, agendamento)){
-                throw new IllegalArgumentException("Conflito de horário com outro agendamento");
+                throw new ConflitoException("Conflito de horário com outro agendamento");
             }
         }
     }
@@ -100,7 +102,7 @@ public class AgendamentoService {
         var barbeiro = buscarBarbeiro();
         var servico = buscarServico(dto.getServicoId());
         var horarioFim = horarioFim(servico, dto);
-        validarDiaAtendimento(barbeiro, dto.getData(), dto);
+        validarDiaAtendimento(barbeiro, dto);
         validarDentroExpediente(barbeiro, dto.getHorarioInicio(), horarioFim);
         validarConflito(barbeiro.getId(), dto.getData(), dto.getHorarioInicio(), horarioFim);
 
@@ -160,10 +162,10 @@ public class AgendamentoService {
      public void cancelarAgendamento(Long id, String email) {
         log.info("Cancelando agendamento");
         var entity = agendamentoRepository.findById(id).orElseThrow
-                (() -> new IllegalArgumentException("Agendamento não encontrado"));
-        if (!entity.getStatus().equals(Status.AGENDADO)) throw new IllegalArgumentException("Agendamento não pode ser cancelado pois já está com status: " + entity.getStatus());
+                (() -> new RecursoNaoEncontradoException("Agendamento não encontrado"));
+        if (!entity.getStatus().equals(Status.AGENDADO)) throw new ConflitoException("Agendamento não pode ser cancelado pois já está com status: " + entity.getStatus());
         var emailCorresponde = entity.getCliente().getEmail().equals(email);
-        if (!emailCorresponde) throw new IllegalArgumentException("Agendamento não encontrado para este email");
+        if (!emailCorresponde) throw new RecursoNaoEncontradoException("Agendamento não encontrado para este email");
         entity.setStatus(Status.CANCELADO);
         agendamentoRepository.save(entity);
 
@@ -177,7 +179,7 @@ public class AgendamentoService {
     }
 
     private AgendamentoDTO convertToDTO(Agendamento agendamento) {
-        var certos = ObjectMapper.map(agendamento, AgendamentoDTO.class);
+        var certos = Mapper.map(agendamento, AgendamentoDTO.class);
         certos.setServicoId(agendamento.getServico().getId());
         certos.setClienteEmail(agendamento.getCliente().getEmail());
         certos.setClienteNome(agendamento.getCliente().getNome());

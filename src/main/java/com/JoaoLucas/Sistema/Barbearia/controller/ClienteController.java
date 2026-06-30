@@ -36,13 +36,6 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.getAllClients());
     }
 
-    @PostMapping
-    public ResponseEntity<ClienteDTO> criaCliente(@Valid @RequestBody ClienteDTO clienteDTO) {
-        ClienteDTO created = clienteService.saveCliente(clienteDTO);
-        URI location = URI.create(String.format("/api/clientes/v1/%d", created.getId()));
-        return ResponseEntity.created(location).body(created);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<ClienteDTO> atualizaCliente(@PathVariable Long id, @Valid @RequestBody ClienteDTO clienteDTO) {
         clienteDTO.setId(id);

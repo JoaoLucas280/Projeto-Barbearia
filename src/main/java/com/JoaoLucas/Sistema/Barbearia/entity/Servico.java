@@ -2,9 +2,7 @@ package com.JoaoLucas.Sistema.Barbearia.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -13,7 +11,8 @@ import java.util.Objects;
 @Table(name = "servicos")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Servico {
 
     @Id
