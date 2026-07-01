@@ -42,10 +42,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/barbeiro/v1/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/clientes/v1/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/clientes/v1/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/clientes/v1/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/clientes/v1/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/auth/v1/login").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();

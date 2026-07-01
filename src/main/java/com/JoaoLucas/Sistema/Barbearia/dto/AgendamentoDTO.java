@@ -12,7 +12,8 @@ import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class AgendamentoDTO {
 
     private Long id;

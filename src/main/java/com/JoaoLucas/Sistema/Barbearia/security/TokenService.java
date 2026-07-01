@@ -35,13 +35,13 @@ public class TokenService {
     }
 
     public String extrairUsername(String token){
-        String username = Jwts.parser()
+        String parser = Jwts.parser()
                 .verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
 
-        return username;
+        return parser;
     }
 }
