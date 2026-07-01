@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("form-agendamento");
     const mensagem = document.getElementById("mensagem");
 
-    // 1. Carrega os serviços quando a página abre
+
     const servicos = await buscarServicos();
     servicos.forEach(servico => {
         const option = document.createElement("option");
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         selectServico.appendChild(option);
     });
 
-    // 2. Habilita a data quando o serviço é escolhido
+
     selectServico.addEventListener("change", () => {
         if (selectServico.value) {
             inputData.disabled = false;
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // 3. Busca horários quando a data é escolhida
+
     inputData.addEventListener("change", async () => {
         const servicoId = selectServico.value;
         const data = inputData.value;
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         selectHorario.disabled = false;
     });
 
-    // 4. Envia o agendamento
+
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 

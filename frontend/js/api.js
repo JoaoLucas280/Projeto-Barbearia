@@ -22,3 +22,16 @@ async function criarAgendamento(agendamento) {
     });
     return response;
 }
+
+async function buscarAgendamentosPorEmail(email) {
+    const response = await fetch(`${BASE_URL}/api/agendamentos/v1?email=${email}`);
+    const data = await response.json();
+    return data;
+}
+
+async function cancelarAgendamento(id, email) {
+    const response = await fetch(`${BASE_URL}/api/agendamentos/v1/${id}/cancelar?email=${email}`, {
+        method: "PATCH"
+    });
+    return response;
+}
