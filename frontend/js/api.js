@@ -46,3 +46,14 @@ async function login(username, senha) {
     });
     return response;
 }
+
+async function buscarTodosAgendamentos() {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/agendamentos/v1/todos`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    const data = await response.json();
+    return data;
+}
