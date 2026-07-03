@@ -100,3 +100,21 @@ async function deletarServico(id) {
     });
     return response;
 }
+
+async function buscarBarbeiro() {
+    const response = await fetch(`${BASE_URL}/api/barbeiro/v1`);
+    return await response.json();
+}
+
+async function atualizarBarbeiro(barbeiro) {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/barbeiro/v1`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(barbeiro)
+    });
+    return response;
+}
