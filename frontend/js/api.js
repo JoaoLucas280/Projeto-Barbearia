@@ -35,3 +35,14 @@ async function cancelarAgendamento(id, email) {
     });
     return response;
 }
+
+async function login(username, senha) {
+    const response = await fetch(`${BASE_URL}/api/auth/v1/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, senha })
+    });
+    return response;
+}
