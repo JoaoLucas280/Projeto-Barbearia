@@ -57,3 +57,46 @@ async function buscarTodosAgendamentos() {
     const data = await response.json();
     return data;
 }
+
+async function buscarServicoPorId(id) {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/servicos/v1/${id}`, {
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+    return await response.json();
+}
+
+async function criarServico(servico) {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/servicos/v1`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(servico)
+    });
+    return response;
+}
+
+async function atualizarServico(id, servico) {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/servicos/v1/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(servico)
+    });
+    return response;
+}
+
+async function deletarServico(id) {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/servicos/v1/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+    return response;
+}

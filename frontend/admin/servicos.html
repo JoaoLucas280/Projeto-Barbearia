@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia — Serviços</title>
+</head>
+<body>
+
+<header>
+    <h1>Serviços</h1>
+    <button id="btn-logout">Logout</button>
+</header>
+
+<main>
+    <h2>Novo Serviço</h2>
+    <form id="form-servico">
+        <input type="hidden" id="servico-id">
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="number" id="valor" placeholder="Valor (R$)" step="0.01" required>
+        <input type="number" id="duracao" placeholder="Duração (minutos)" required>
+        <input type="text" id="descricao" placeholder="Descrição">
+        <button type="submit" id="btn-salvar">Salvar</button>
+        <button type="button" id="btn-cancelar" style="display:none">Cancelar</button>
+    </form>
+
+    <h2>Serviços Cadastrados</h2>
+    <table id="tabela-servicos">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Valor</th>
+            <th>Duração</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="corpo-tabela"></tbody>
+    </table>
+
+    <p id="mensagem"></p>
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/servicos.js"></script>
+</body>
+</html>
