@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get("email");
+    if (emailParam) {
+        inputEmail.value = emailParam;
+        btnBuscar.click();
+    }
     const btnBuscar = document.getElementById("btn-buscar");
     const inputEmail = document.getElementById("email");
     const lista = document.getElementById("lista-agendamentos");

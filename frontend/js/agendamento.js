@@ -58,9 +58,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await criarAgendamento(agendamento);
 
         if (response.ok) {
-            mensagem.textContent = "Agendamento realizado com sucesso!";
+            mensagem.innerHTML = `
+        Agendamento realizado com sucesso! 
+        <a href="meus-agendamentos.html?email=${document.getElementById('email').value}">
+            Ver meus agendamentos
+        </a>
+    `;
             mensagem.style.color = "green";
             form.reset();
+            selectHorario.disabled = true;
+            inputData.disabled = true;
         } else {
             const erro = await response.json();
             mensagem.textContent = erro.message || "Erro ao realizar agendamento.";

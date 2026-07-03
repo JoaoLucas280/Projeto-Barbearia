@@ -1,3 +1,5 @@
+document.querySelector('a[href="clientes.html"]').classList.add("ativo");
+
 document.addEventListener("DOMContentLoaded", async () => {
     const token = sessionStorage.getItem("token");
     if (!token) {

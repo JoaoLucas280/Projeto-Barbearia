@@ -1,3 +1,5 @@
+document.querySelector('a[href="dashboard.html"]').classList.add("ativo");
+
 document.addEventListener("DOMContentLoaded", async () => {
     const token = sessionStorage.getItem("token");
     if (!token) {
@@ -43,4 +45,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
         corpoTabela.appendChild(linha);
     });
+});
+
+agendamentos.forEach(ag => {
+    const linha = document.createElement("tr");
+    if (ag.status === "CANCELADO") {
+        linha.className = "cancelado";
+    }
+    linha.innerHTML = `
+        <td>${ag.clienteNome}</td>
+        <td>${ag.clienteEmail}</td>
+        <td>${mapaServicos[ag.servicoId] || ag.servicoId}</td>
+        <td>${ag.data}</td>
+        <td>${ag.horarioInicio} - ${ag.horarioFim}</td>
+        <td>${ag.status}</td>
+    `;
+    corpoTabela.appendChild(linha);
 });
