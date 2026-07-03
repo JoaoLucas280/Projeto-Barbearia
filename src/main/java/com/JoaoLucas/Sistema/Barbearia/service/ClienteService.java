@@ -4,7 +4,9 @@ import com.JoaoLucas.Sistema.Barbearia.dto.ClienteDTO;
 import com.JoaoLucas.Sistema.Barbearia.entity.Cliente;
 import com.JoaoLucas.Sistema.Barbearia.exception.RecursoNaoEncontradoException;
 import com.JoaoLucas.Sistema.Barbearia.mapper.Mapper;
+import com.JoaoLucas.Sistema.Barbearia.repository.AgendamentoRepository;
 import com.JoaoLucas.Sistema.Barbearia.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ public class ClienteService {
     private static final Logger log = LoggerFactory.getLogger(ClienteService.class);
 
     private final ClienteRepository clienteRepository;
+    private final AgendamentoRepository agendamentoRepository;
+    private final AgendamentoService agendamentoService;
 
     public ClienteDTO getClienteById(Long id) {
         log.info("Procurando cliente pelo id");
@@ -59,10 +63,17 @@ public class ClienteService {
         return Mapper.map(clienteRepository.save(entity), ClienteDTO.class);
     }
 
+    @Transactional
     public void deleteCliente(Long id) {
         log.info("Deletando cliente");
-        var entity =  clienteRepository.findById(id).orElseThrow
-                (() -> new IllegalArgumentException("Cliente não encontrado"));
+        var entity = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
+        if (agendamentoService.temAgendamentosAtivos(id)) {
+            throw new IllegalStateException("Cliente possui agendamentos ativos e não pode ser removido");
+        }
+
+        agendamentoRepository.deleteByClienteId(id);
         clienteRepository.delete(entity);
     }
 }

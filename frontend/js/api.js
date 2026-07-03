@@ -118,3 +118,33 @@ async function atualizarBarbeiro(barbeiro) {
     });
     return response;
 }
+
+async function buscarClientes() {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/clientes/v1`, {
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+    return await response.json();
+}
+
+async function atualizarCliente(id, cliente) {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/clientes/v1/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(cliente)
+    });
+    return response;
+}
+
+async function deletarCliente(id) {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/api/clientes/v1/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+    return response;
+}

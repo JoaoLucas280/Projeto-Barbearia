@@ -12,5 +12,7 @@ import java.util.List;
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
     List<Agendamento> findByBarbeiroIdAndDataAndStatusNot(Long barbeiroId, LocalDate data, Status status);
     List<Agendamento> findByClienteEmail(String email);
+    boolean existsByClienteIdAndStatus(Long clienteId, Status status);
+    void deleteByClienteId(Long clienteId);
 }
 

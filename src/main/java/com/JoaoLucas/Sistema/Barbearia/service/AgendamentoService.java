@@ -195,4 +195,8 @@ public class AgendamentoService {
         return dtos;
     }
 
+    public boolean temAgendamentosAtivos(Long clienteId) {
+        return agendamentoRepository.existsByClienteIdAndStatus(clienteId, Status.AGENDADO);
+    }
+
 }
