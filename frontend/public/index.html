@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia — Agendamento</title>
+    <link rel="stylesheet" href="../css/publico.css">
+</head>
+<body>
+
+<header>
+    <h1>Barbearia</h1>
+    <p>Agende seu horário</p>
+    <a href="meus-agendamentos.html" id="btn-meus-agendamentos">Meus Agendamentos</a>
+</header>
+
+<main>
+    <form id="form-agendamento">
+
+        <input type="text" id="nome" placeholder="Seu nome" required>
+        <input type="email" id="email" placeholder="Seu email" required>
+        <input type="tel" id="telefone" placeholder="Seu telefone" required>
+
+        <select id="servico">
+            <option value="">Selecione um serviço</option>
+        </select>
+
+        <input type="date" id="data" disabled>
+
+        <select id="horario" disabled>
+            <option value="">Selecione um horário</option>
+        </select>
+
+        <button type="submit">Agendar</button>
+
+    </form>
+
+    <div id="mensagem"></div>
+</main>
+<footer>
+    <a href="../admin/login.html">Área administrativa</a>
+</footer>
+<script src="../js/api.js"></script>
+<script src="../js/agendamento.js"></script>
+</body>
+</body>
+</html>
