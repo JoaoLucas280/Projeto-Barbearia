@@ -19,24 +19,28 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     public ResponseEntity<ErrorResponseDTO> handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
+        log.warn("Recurso não encontrado: {}", ex.getMessage());
         ErrorResponseDTO errorMessage = new ErrorResponseDTO(LocalDateTime.now(),HttpStatus.NOT_FOUND.value(), "Recurso não encontrado", ex.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ConflitoException.class)
     public ResponseEntity<ErrorResponseDTO> handleConflito(ConflitoException ex) {
+        log.warn("Conflito: {}", ex.getMessage());
         ErrorResponseDTO errorMessage = new ErrorResponseDTO(LocalDateTime.now(),HttpStatus.CONFLICT.value(), "Conflito", ex.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponseDTO> handleIllegalArgument(IllegalArgumentException ex) {
+        log.warn("Argumento inválido: {}", ex.getMessage());
         ErrorResponseDTO errorMessage = new ErrorResponseDTO(LocalDateTime.now(),HttpStatus.BAD_REQUEST.value(), "Argumento inválido", ex.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponseDTO> handleBadCredentials(BadCredentialsException ex) {
+        log.warn("Credenciais não autorizadas: {}", ex.getMessage());
         ErrorResponseDTO errorMessage = new ErrorResponseDTO(LocalDateTime.now(),HttpStatus.UNAUTHORIZED.value(), "Credenciais não autorizadas", ex.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }

@@ -22,7 +22,7 @@ public class ServicoService {
     private final ServicoRepository repository;
 
     public ServicoDTO getServicoById(Long id) {
-        log.info("Procurando serviço pelo id");
+        log.info("Procurando serviço pelo id {}", id);
         var entity = repository.findById(id).orElseThrow
                 (() -> new RecursoNaoEncontradoException("Serviço não encontrado"));
         return Mapper.map(entity, ServicoDTO.class);
@@ -34,7 +34,7 @@ public class ServicoService {
     }
 
     public ServicoDTO saveServico(ServicoDTO servicoDTO) {
-        log.info("Salvando serviço");
+        log.info("Salvando serviço {}" , servicoDTO.getNome());
         var entity = Mapper.map(servicoDTO, Servico.class);
         var saved = repository.save(entity);
         var dto = Mapper.map(saved, ServicoDTO.class);
@@ -43,7 +43,7 @@ public class ServicoService {
     }
 
     public ServicoDTO updateServico(ServicoDTO servico) {
-        log.info("Atualizando serviço");
+        log.info("Atualizando serviço com nome {} e id {}", servico.getNome(), servico.getId());
         Servico entity = repository.findById(servico.getId()).orElseThrow
                 (() -> new RecursoNaoEncontradoException("Serviço não encontrado"));
         entity.setNome(servico.getNome());
@@ -54,7 +54,7 @@ public class ServicoService {
     }
 
     public void deleteServico(Long id) {
-        log.info("Deletando serviço");
+        log.info("Deletando serviço com id {}", id);
         var entity =  repository.findById(id).orElseThrow
                 (() -> new RecursoNaoEncontradoException("Serviço não encontrado"));
         repository.delete(entity);

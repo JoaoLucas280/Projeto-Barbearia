@@ -33,7 +33,7 @@ public class AgendamentoService {
     private final EmailService emailService;
 
     public Cliente buscarPorEmail(AgendamentoDTO dto) {
-        log.info("Buscando Cliente por email");
+        log.info("Buscando Cliente com email {}", dto.getClienteEmail());
         var entity =  clienteRepository.findByEmail(dto.getClienteEmail());
 
         if (entity.isEmpty()){
@@ -55,19 +55,19 @@ public class AgendamentoService {
     }
 
     public Servico buscarServico (Long id){
-        log.info("Buscando Serviço");
+        log.info("Buscando Serviço com id {}", id);
         var entity = servicoRepository.findById(id).orElseThrow
                 (() -> new RecursoNaoEncontradoException("Serviço não encontrado"));
         return entity;
     }
 
     public LocalTime horarioFim (Servico servico, AgendamentoDTO dto) {
-        log.info("Calculando horário de término do serviço");
+        log.info("Calculando horário de término do serviço {}", servico.getNome());
         return dto.getHorarioInicio().plusMinutes(servico.getDuracao());
     }
 
     private void validarDiaAtendimento(Barbeiro barbeiro, AgendamentoDTO dto) {
-        log.info("validando dia atendimento");
+        log.info("validando dia de atendimento nos dias {}", barbeiro.getDiasTrabalho());
         var entity = barbeiro.getDiasTrabalho().contains(dto.getData().getDayOfWeek());
         if (!entity){
             throw new IllegalArgumentException("Barbeiro não atende neste dia");
@@ -75,14 +75,14 @@ public class AgendamentoService {
     }
 
     private void validarDentroExpediente(Barbeiro barbeiro, LocalTime inicio, LocalTime fim) {
-        log.info("Validando horário de expediente");
+        log.info("Validando horário de expediente com início {} e fim {}", inicio, fim);
         if (barbeiro.getHorarioInicio().isAfter(inicio) || barbeiro.getHorarioFim().isBefore(fim)){
             throw new IllegalArgumentException("Agendamento fora do horário de expediente do barbeiro");
         }
     }
 
     private void validarConflito(Long barbeiroId, LocalDate data, LocalTime inicio, LocalTime fim) {
-        log.info("Validando conflito");
+        log.info("Validando conflito na data {}, inicio {} e fim {}", data, inicio, fim);
         List<Agendamento> entity =
                 agendamentoRepository.findByBarbeiroIdAndDataAndStatusNot(barbeiroId, data, Status.CANCELADO);
 
@@ -97,7 +97,7 @@ public class AgendamentoService {
     @Transactional
     public AgendamentoDTO saveAgendamento(AgendamentoDTO dto) {
 
-        log.info("Salvando agendamento");
+        log.info("Salvando agendamento para o cliente {}, servico: {},início: {}, fim: {}", dto.getClienteEmail(), dto.getServicoId(),dto.getHorarioInicio(), dto.getHorarioFim());
         var cliente = buscarPorEmail(dto);
         var barbeiro = buscarBarbeiro();
         var servico = buscarServico(dto.getServicoId());
@@ -124,12 +124,12 @@ public class AgendamentoService {
     }
 
     private boolean haConflito(LocalTime inicio, LocalTime fim, Agendamento existente) {
-        log.info("Verificando se há conflito");
+        log.info("Verificando se há conflito para inicio {} e fim {}", inicio, fim);
         return inicio.isBefore(existente.getHorarioFim()) && fim.isAfter(existente.getHorarioInicio());
     }
 
     public List<LocalTime> listarHorariosDisponiveis(LocalDate data, Long servicoId){
-        log.info("Listando horários disponíveis para o dia " + data + " e serviço id " + servicoId);
+        log.info("Listando horários disponíveis para o dia {} e servico id {}", data, servicoId);
         Barbeiro barbeiro = buscarBarbeiro();
         Servico servico = buscarServico(servicoId);
         List<LocalTime> horariosDisponiveis = new ArrayList<>();
@@ -154,13 +154,13 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> buscarPorEmailCliente(String email) {
-        log.info("Buscando agendamentos pelo email do cliente");
+        log.info("Buscando agendamentos pelo email {}", email);
         var agendamentos = agendamentoRepository.findByClienteEmail(email);
         return convertListToDTO(agendamentos);
     }
 
      public void cancelarAgendamento(Long id, String email) {
-        log.info("Cancelando agendamento");
+        log.info("Cancelando agendamento com id {} e email {}", id, email);
         var entity = agendamentoRepository.findById(id).orElseThrow
                 (() -> new RecursoNaoEncontradoException("Agendamento não encontrado"));
         if (!entity.getStatus().equals(Status.AGENDADO)) throw new ConflitoException("Agendamento não pode ser cancelado pois já está com status: " + entity.getStatus());

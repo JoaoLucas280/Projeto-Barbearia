@@ -22,7 +22,7 @@ public class BarbeiroService {
     private final BarbeiroRepository barbeiroRepository;
 
    public BarbeiroDTO getBarbeiro() {
-        log.info("Procurando barbeiro pelo id");
+        log.info("Procurando barbeiro");
         var entity  = barbeiroRepository.findFirstByOrderByIdAsc().orElseThrow
                 (() -> new RecursoNaoEncontradoException("Barbeiro não encontrado"));
         return Mapper.map(entity, BarbeiroDTO.class);
@@ -41,7 +41,7 @@ public class BarbeiroService {
     }
 
     public BarbeiroDTO updateBarbeiro(BarbeiroDTO barbeiro) {
-        log.info("Atualizando barbeiro");
+        log.info("Atualizando barbeiro com id {}", barbeiro.getId());
         Barbeiro entity = barbeiroRepository.findFirstByOrderByIdAsc().orElseThrow
                 (() -> new RecursoNaoEncontradoException("Barbeiro não encontrado"));
         entity.setNome(barbeiro.getNome());
