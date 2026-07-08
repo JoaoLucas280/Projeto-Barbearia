@@ -112,10 +112,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await criarAgendamento(agendamento);
 
         if (response.ok) {
+            btnAgendar.textContent = "Agendar";
+            btnAgendar.disabled = false;
             mensagem.innerHTML = `
                 Agendamento realizado com sucesso! 
-                btnAgendar.textContent = "Agendar";
-                btnAgendar.disabled = false;
                 <a href="meus-agendamentos.html?email=${document.getElementById('email').value}">
                     Ver meus agendamentos
                 </a>
