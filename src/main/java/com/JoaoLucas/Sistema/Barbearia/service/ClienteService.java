@@ -26,7 +26,7 @@ public class ClienteService {
     private final AgendamentoService agendamentoService;
 
     public ClienteDTO getClienteById(Long id) {
-        log.info("Procurando cliente pelo id");
+        log.info("Procurando cliente pelo id {}", id);
         var entity  = clienteRepository.findById(id).orElseThrow
                 (() -> new RecursoNaoEncontradoException("Cliente não encontrado"));
         return Mapper.map(entity, ClienteDTO.class);
@@ -38,14 +38,14 @@ public class ClienteService {
     }
 
     public ClienteDTO getClienteByEmail(String email) {
-        log.info("Procurando cliente pelo email");
+        log.info("Procurando cliente pelo email {}", email);
         var entity =  clienteRepository.findByEmail(email).orElseThrow
                 (() -> new RecursoNaoEncontradoException("Cliente não encontrado com este email"));
         return Mapper.map(entity, ClienteDTO.class);
     }
 
     public ClienteDTO saveCliente(ClienteDTO clienteDTO) {
-        log.info("Salvando cliente");
+        log.info("Salvando cliente com email {}", clienteDTO.getEmail());
         var entity = Mapper.map(clienteDTO, Cliente.class);
         var saved = clienteRepository.save(entity);
         var dto = Mapper.map(saved, ClienteDTO.class);
@@ -54,7 +54,7 @@ public class ClienteService {
     }
 
     public ClienteDTO updateCliente(ClienteDTO cliente) {
-        log.info("Atualizando cliente");
+        log.info("Atualizando cliente com id {}", cliente.getId());
         Cliente entity = clienteRepository.findById(cliente.getId()).orElseThrow
                 (() -> new IllegalArgumentException("Cliente não encontrado"));
         entity.setNome(cliente.getNome());
@@ -65,7 +65,7 @@ public class ClienteService {
 
     @Transactional
     public void deleteCliente(Long id) {
-        log.info("Deletando cliente");
+        log.info("Deletando cliente com id {}", id);
         var entity = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
