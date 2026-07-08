@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia — Perfil do Barbeiro</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+<header>
+    <h1>Barbearia — Admin</h1>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="servicos.html">Serviços</a>
+        <a href="barbeiro.html">Barbeiro</a>
+        <a href="clientes.html">Clientes</a>
+    </nav>
+    <button id="btn-logout">Logout</button>
+</header>
+
+<main>
+    <form id="form-barbeiro">
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="text" id="especialidade" placeholder="Especialidade">
+        <input type="text" id="descricao" placeholder="Descrição">
+        <input type="time" id="horarioInicio" required>
+        <input type="time" id="horarioFim" required>
+
+        <fieldset>
+            <legend>Dias de Trabalho</legend>
+            <label><input type="checkbox" value="MONDAY"> Segunda</label>
+            <label><input type="checkbox" value="TUESDAY"> Terça</label>
+            <label><input type="checkbox" value="WEDNESDAY"> Quarta</label>
+            <label><input type="checkbox" value="THURSDAY"> Quinta</label>
+            <label><input type="checkbox" value="FRIDAY"> Sexta</label>
+            <label><input type="checkbox" value="SATURDAY"> Sábado</label>
+            <label><input type="checkbox" value="SUNDAY"> Domingo</label>
+        </fieldset>
+
+        <button type="submit">Atualizar</button>
+    </form>
+
+    <p id="mensagem"></p>
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/barbeiro.js"></script>
+</body>
+</html>

@@ -2,66 +2,78 @@ package com.JoaoLucas.Sistema.Barbearia.service;
 
 import com.JoaoLucas.Sistema.Barbearia.dto.ClienteDTO;
 import com.JoaoLucas.Sistema.Barbearia.entity.Cliente;
-import com.JoaoLucas.Sistema.Barbearia.mapper.ObjectMapper;
+import com.JoaoLucas.Sistema.Barbearia.exception.RecursoNaoEncontradoException;
+import com.JoaoLucas.Sistema.Barbearia.mapper.Mapper;
+import com.JoaoLucas.Sistema.Barbearia.repository.AgendamentoRepository;
 import com.JoaoLucas.Sistema.Barbearia.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
 
     private static final Logger log = LoggerFactory.getLogger(ClienteService.class);
 
-    @Autowired
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
+    private final AgendamentoRepository agendamentoRepository;
+    private final AgendamentoService agendamentoService;
 
     public ClienteDTO getClienteById(Long id) {
-        log.info("Procurando cliente pelo id");
+        log.info("Procurando cliente pelo id {}", id);
         var entity  = clienteRepository.findById(id).orElseThrow
-                (() -> new IllegalArgumentException("Cliente não encontrado"));
-        return ObjectMapper.map(entity, ClienteDTO.class);
+                (() -> new RecursoNaoEncontradoException("Cliente não encontrado"));
+        return Mapper.map(entity, ClienteDTO.class);
     }
 
     public List<ClienteDTO> getAllClients() {
         log.info("Procurando todos os clientes");
-        return ObjectMapper.mapListObjects(clienteRepository.findAll(), ClienteDTO.class);
+        return Mapper.mapListObjects(clienteRepository.findAll(), ClienteDTO.class);
     }
 
     public ClienteDTO getClienteByEmail(String email) {
-        log.info("Procurando cliente pelo email");
+        log.info("Procurando cliente pelo email {}", email);
         var entity =  clienteRepository.findByEmail(email).orElseThrow
-                (() -> new IllegalArgumentException("Cliente não encontrado com este email"));
-        return ObjectMapper.map(entity, ClienteDTO.class);
+                (() -> new RecursoNaoEncontradoException("Cliente não encontrado com este email"));
+        return Mapper.map(entity, ClienteDTO.class);
     }
 
     public ClienteDTO saveCliente(ClienteDTO clienteDTO) {
-        log.info("Salvando cliente");
-        var entity = ObjectMapper.map(clienteDTO, Cliente.class);
+        log.info("Salvando cliente com email {}", clienteDTO.getEmail());
+        var entity = Mapper.map(clienteDTO, Cliente.class);
         var saved = clienteRepository.save(entity);
-        var dto = ObjectMapper.map(saved, ClienteDTO.class);
+        var dto = Mapper.map(saved, ClienteDTO.class);
         dto.setId(saved.getId());
         return dto;
     }
 
     public ClienteDTO updateCliente(ClienteDTO cliente) {
-        log.info("Atualizando cliente");
+        log.info("Atualizando cliente com id {}", cliente.getId());
         Cliente entity = clienteRepository.findById(cliente.getId()).orElseThrow
                 (() -> new IllegalArgumentException("Cliente não encontrado"));
         entity.setNome(cliente.getNome());
         entity.setEmail(cliente.getEmail());
         entity.setTelefone(cliente.getTelefone());
-        return ObjectMapper.map(clienteRepository.save(entity), ClienteDTO.class);
+        return Mapper.map(clienteRepository.save(entity), ClienteDTO.class);
     }
 
+    @Transactional
     public void deleteCliente(Long id) {
-        log.info("Deletando cliente");
-        var entity =  clienteRepository.findById(id).orElseThrow
-                (() -> new IllegalArgumentException("Cliente não encontrado"));
+        log.info("Deletando cliente com id {}", id);
+        var entity = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
+        if (agendamentoService.temAgendamentosAtivos(id)) {
+            throw new IllegalStateException("Cliente possui agendamentos ativos e não pode ser removido");
+        }
+
+        agendamentoRepository.deleteByClienteId(id);
         clienteRepository.delete(entity);
     }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia — Dashboard</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+<header>
+    <h1>Barbearia — Admin</h1>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="servicos.html">Serviços</a>
+        <a href="barbeiro.html">Barbeiro</a>
+        <a href="clientes.html">Clientes</a>
+    </nav>
+    <button id="btn-logout">Logout</button>
+</header>
+
+<main>
+    <h2>Todos os Agendamentos</h2>
+    <table id="tabela-agendamentos">
+        <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Email</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody id="corpo-tabela"></tbody>
+    </table>
+    <p id="mensagem"></p>
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>
