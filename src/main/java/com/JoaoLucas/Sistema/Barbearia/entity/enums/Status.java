@@ -1,4 +1,4 @@
-package com.JoaoLucas.Sistema.Barbearia.entity;
+package com.JoaoLucas.Sistema.Barbearia.entity.enums;
 
 public enum Status {
     AGENDADO,

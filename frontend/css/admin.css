@@ -1,0 +1,230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333333;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #6D1A1A;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav a {
+    color: #444444;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+nav a:hover {
+    color: #6D1A1A;
+    border-bottom-color: #6D1A1A;
+}
+
+nav a.ativo {
+    color: #6D1A1A;
+    border-bottom-color: #6D1A1A;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #444444;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eeeeee;
+}
+
+/* Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+thead {
+    background-color: #6D1A1A;
+    color: #ffffff;
+}
+
+thead th {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #eeeeee;
+    transition: background-color 0.15s;
+}
+
+tbody tr:hover {
+    background-color: #fafafa;
+}
+
+tbody td {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Linha cancelada no dashboard */
+tbody tr.cancelado {
+    background-color: #e0e0e0;
+    color: #888888;
+}
+
+tbody tr.cancelado:hover {
+    background-color: #d6d6d6;
+}
+
+/* Formulários */
+form {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+input, select {
+    border: 1px solid #dddddd;
+    padding: 0.65rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #333333;
+    background-color: #fafafa;
+    flex: 1;
+    min-width: 180px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #6D1A1A;
+}
+
+/* Botões */
+button {
+    padding: 0.65rem 1.25rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+button[type="submit"],
+button#btn-salvar {
+    background-color: #6D1A1A;
+    color: #ffffff;
+}
+
+button[type="submit"]:hover,
+button#btn-salvar:hover {
+    background-color: #8B2222;
+}
+
+button#btn-cancelar {
+    background-color: #dddddd;
+    color: #333333;
+}
+
+button#btn-cancelar:hover {
+    background-color: #cccccc;
+}
+
+.btn-editar {
+    background-color: #4a4a4a;
+    color: #ffffff;
+    margin-right: 0.5rem;
+}
+
+.btn-editar:hover {
+    background-color: #333333;
+}
+
+.btn-deletar {
+    background-color: #6D1A1A;
+    color: #ffffff;
+}
+
+.btn-deletar:hover {
+    background-color: #8B2222;
+}
+
+/* Mensagens */
+#mensagem {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Formulário de edição de clientes */
+#form-edicao {
+    background-color: #fff8f8;
+    border: 1px solid #6D1A1A;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Fieldset dos dias de trabalho */
+fieldset {
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    padding: 1rem;
+    width: 100%;
+}
+
+legend {
+    padding: 0 0.5rem;
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+fieldset label {
+    margin-right: 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+fieldset input[type="checkbox"] {
+    min-width: unset;
+    width: auto;
+    flex: none;
+    margin-right: 0.25rem;
+}

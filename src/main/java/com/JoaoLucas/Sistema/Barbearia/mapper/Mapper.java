@@ -2,14 +2,13 @@ package com.JoaoLucas.Sistema.Barbearia.mapper;
 
 
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
-import com.github.dozermapper.core.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjectMapper {
+public class Mapper {
 
-    private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+    private static com.github.dozermapper.core.Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 
     public static <O, D> D map(O origin, Class<D> destination) {
         return mapper.map(origin, destination);
