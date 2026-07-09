@@ -1,18 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const btnBuscar = document.getElementById("btn-buscar");
+    const inputEmail = document.getElementById("email");
+    const lista = document.getElementById("lista-agendamentos");
+    const mensagem = document.getElementById("mensagem");
+
     const params = new URLSearchParams(window.location.search);
     const emailParam = params.get("email");
     if (emailParam) {
         inputEmail.value = emailParam;
         btnBuscar.click();
     }
-    const btnBuscar = document.getElementById("btn-buscar");
-    const inputEmail = document.getElementById("email");
-    const lista = document.getElementById("lista-agendamentos");
-    const mensagem = document.getElementById("mensagem");
 
     btnBuscar.addEventListener("click", async () => {
-        const email = inputEmail.value;
-
+        const email = inputEmail.value;  // lê o valor AQUI, dentro do click
         if (!email) {
             mensagem.textContent = "Digite seu email para buscar.";
             return;
