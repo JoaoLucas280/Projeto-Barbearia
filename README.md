@@ -23,7 +23,7 @@ Sistema web completo para gerenciamento de agendamentos de barbearia, desenvolvi
 ## 🚀 Tecnologias
  
 ### Backend
-- **Java 21** (LTS)
+- **Java 17** (LTS)
 - **Spring Boot 4.1.0**
 - **Spring Security** com autenticação JWT stateless
 - **Spring Data JPA** + **Hibernate**
