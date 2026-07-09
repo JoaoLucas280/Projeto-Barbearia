@@ -91,7 +91,7 @@ frontend/
 ## ⚙️ Como rodar o projeto
  
 ### Pré-requisitos
-- Java 21
+- Java 17
 - Maven
 - Docker e Docker Compose
 ### 1. Clone o repositório
